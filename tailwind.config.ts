@@ -13,6 +13,9 @@ export default {
         background: "var(--background)",
         foreground: "var(--foreground)",
       },
+      backgroundImage: {
+        'custom-pattern': 'repeating-radial-gradient(circle at 0 0, transparent 0, #22abd5 32px), repeating-linear-gradient(#171b88, #171b88)',
+      },
     },
   },
   plugins: [
