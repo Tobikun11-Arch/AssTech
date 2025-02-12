@@ -1,6 +1,6 @@
-import { HomeProps } from "../Interface/Homepage";
+import { HomeProps } from "../../Interface/Homepage";
 import Header from "./Layout/Header";
-import HomeAnimation from "./components/HomepageAnimation";
+import HomeAnimation from "./HomepageAnimation";
 
 export default function Home({ count }: HomeProps) {
     return (
