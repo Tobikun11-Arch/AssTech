@@ -9,7 +9,7 @@ export default function Home({ count }: HomeProps) {
             <Header count={count}/>
             <HomeAnimation/>
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex gap-2">
-                <Link href={'/Ideas/Generator'}>
+                <Link href={'/Ass/Tech'}>
                     <button className="px-4 py-2 bg-yellow-500 text-black font-semibold rounded-md hover:bg-yellow-400 transition">
                     Start now</button>
                 </Link>

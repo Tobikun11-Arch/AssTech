@@ -7,7 +7,7 @@ interface SidebarProps {
 export default function sidebar({ onTabChange }: SidebarProps) {
 
     return (
-        <div className='bg-gray-800 h-full w-24 text-black'>
+        <div className='bg-gray-800 h-full w-24 text-black cursor-default'>
             <div className='flex flex-col items-center justify-center h-full'>
                 <div className='w-12 h-12 bg-white rounded-full' onClick={()=> onTabChange('home')}>Ideas</div>
                 <div className='w-12 h-12 bg-white rounded-full mt-4' onClick={()=> onTabChange('how')}>How</div>

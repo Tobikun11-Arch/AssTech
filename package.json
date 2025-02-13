@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@headlessui/react": "^2.2.0",
     "@tanstack/react-query": "^5.66.0",
     "ass-tech": "file:",
     "framer-motion": "^12.4.2",
