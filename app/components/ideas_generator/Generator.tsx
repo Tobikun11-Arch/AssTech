@@ -41,7 +41,7 @@ export default function Generator() {
     };
 
     return (
-       <main className='h-screen flex'>
+       <main className='min-h-screen flex'>
             <Sidebar onTabChange={handleTabChange}/>
             <div className='flex-grow bg-[#D6DCE1] dark:bg-[#D6DCE1] flex justify-center items-center'>
                 {activeTab === 'how' && <Start/>}

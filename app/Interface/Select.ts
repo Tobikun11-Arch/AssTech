@@ -5,7 +5,7 @@ export interface optionsProps {
 
 export const ideasType = [
     { id: 1, name: "Mini projects" },
-    { id: 2, name: "Capstone generator" }
+    { id: 2, name: "Capstone Ideas" }
 ]   
 
 export const Industry = [
