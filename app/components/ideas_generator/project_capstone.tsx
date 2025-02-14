@@ -1,3 +1,4 @@
+"use client"
 import React, { useState } from 'react'
 import IndustrySelector from './IndustrySelector'
 import IdeasSelector from './IdeasSelector'
@@ -7,6 +8,7 @@ import DifLevel from '../common/level'
 import { Lightbulb, Download } from 'lucide-react'
 import { useGenerator } from '@/app/state/generator_select'
 import Image from 'next/image'
+import html2pdf from 'html2pdf.js'
 
 export default function project_capstone() {
     const { setLevelType, level_type, industry, ideas, project_type, add_details, setAddDetails } = useGenerator()
@@ -39,17 +41,36 @@ export default function project_capstone() {
             })
             const response = await res.json()
 
-            try {
                 const parsed = JSON.parse(response.message);
                 setParsedData(parsed);
-            } catch (error) {
-                console.error("Error parsing JSON:", error);
-                setParsedData(null);
-            }
         } catch (error) {
             console.error("error: ", error)
         } finally {
             setLoading(false)
+        }
+    }
+
+    async function handleExportPDF() {
+        const element = document.querySelector('#exportpdf')
+        if (element && parsedData) {
+            const ideaName = parsedData.idea_name; 
+            const fileName = `${ideaName}.pdf`;
+
+            const options = {
+                margin: 10,
+                filename: fileName,
+                html2canvas: {
+                    scale: 2,
+                    useCORS: true, 
+                },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+            };
+            
+            try {
+                await html2pdf().set(options).from(element).save();
+            } catch (error) {
+                console.error('Error exporting PDF:', error);
+            }
         }
     }
 
@@ -98,24 +119,22 @@ export default function project_capstone() {
                 {loading ? (
                     <div className='w-full h-64 lg:h-full flex flex-col justify-center items-center'>
                         <img src="/run.gif" alt="Animated GIF" width={100} height={200} />
-                        <h1 className='-mt-24 text-gray-400'>Thinking...</h1>
+                        <h1 className='-mt-10'>On my wayyyy...</h1>
                     </div>
                 ) : parsedData ? (
-                    <>
+                    <section id='exportpdf'>
                         <div className='flex items-center justify-between lg:mt-5'>
                             <h1 className='text-2xl font-semibold'>📌 {parsedData.idea_name}</h1>
-                            <Download />
+                            <div data-html2canvas-ignore>
+                                <Download onClick={handleExportPDF}/>
+                            </div> 
                         </div>
-                        <h1 className="text-based mt-5 font-semibold">
-                        🛠 Technologies:
-                        {parsedData?.technologies.map((tech: string, index: number) => (
-                            <span key={index} className="bg-gray-200 text-sm font-medium text-black px-2 py-1 rounded-md mx-1">
-                            {tech}
-                            </span>
-                        ))}
-                        </h1>
+                       <div className='mt-5'>
+                            <p className="text-lg font-medium text-black">🛠 Technologies:</p>
+                            <p className='text-red-500'>{parsedData?.technologies.join(', ')}</p>
+                       </div>
                         <h1 className='mt-10 text-lg text-gray-600'><span className='font-semibold text-xl text-black'>📖 Summary:</span> <br /> {parsedData.summary}</h1>
-                    </>
+                    </section>
                 ) : (
                     <div className='w-full h-full flex flex-col justify-center items-center'>
                         <div className='h-48 w-48 relative'>
