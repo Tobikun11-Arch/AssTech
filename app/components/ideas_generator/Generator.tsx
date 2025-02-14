@@ -41,9 +41,11 @@ export default function Generator() {
     };
 
     return (
-       <main className='min-h-screen flex dark:text-black'>
-            <Sidebar onTabChange={handleTabChange}/>
-            <div className='flex-grow bg-[#D6DCE1] dark:bg-[#D6DCE1] flex justify-center items-center'>
+       <main className='min-h-screen flex flex-col sm:flex-row'>
+            <div className='order-2 sm:order-1 sm:min-h-screen'>
+                <Sidebar onTabChange={handleTabChange}/>
+            </div>
+            <div className='sm:flex-grow bg-[#D6DCE1] dark:bg-[#D6DCE1] flex justify-center items-center order-1 sm:order-2'>
                 {activeTab === 'how' && <Start/>}
                 {activeTab === 'compiler' && <Compilter/>}
                 {activeTab === 'assistant' && <Assistant/>}

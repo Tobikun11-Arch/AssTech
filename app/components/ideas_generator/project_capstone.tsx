@@ -8,7 +8,6 @@ import DifLevel from '../common/level'
 import { Lightbulb, Download } from 'lucide-react'
 import { useGenerator } from '@/app/state/generator_select'
 import Image from 'next/image'
-import html2pdf from 'html2pdf.js'
 
 export default function project_capstone() {
     const { setLevelType, level_type, industry, ideas, project_type, add_details, setAddDetails } = useGenerator()
@@ -16,42 +15,64 @@ export default function project_capstone() {
     const [ loading, setLoading ] = useState<boolean>(false)
 
     async function handleGenerate() {
-        setLoading(true)
+        setLoading(true);
         const prompt = `Generate a mini project idea based on the following criteria:
         Ideas for: ${ideas}
         Industry: ${industry}
         Project Type: ${project_type}
         Difficulty Level: ${level_type}
         Additional Details: ${add_details || "None"}
-
+    
         Respond in JSON format with:
         {
         "idea_name": "Project Name",
         "technologies": ["Tech1", "Tech2", "Tech3"],
         "summary": "A brief description of the project."
-        }`
-
+        }`;
+    
         try {
             const res = await fetch('http://localhost:5000/add/data', {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json" 
+                    "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ prompt })
-            })
-            const response = await res.json()
-
-                const parsed = JSON.parse(response.message);
-                setParsedData(parsed);
+                body: JSON.stringify({ prompt }),
+            });
+    
+            const rawResponse = await res.text();
+            console.log("Raw Response:", rawResponse);
+    
+            // Check if the response is valid JSON
+            let response;
+            try {
+                response = JSON.parse(rawResponse);
+            } catch (e) {
+                throw new Error("Invalid JSON response from the server");
+            }
+    
+            // Check if the response contains the expected field
+            if (!response.message) {
+                throw new Error("Missing 'message' field in response");
+            }
+    
+            // Parse the message field
+            const parsed = JSON.parse(response.message);
+            setParsedData(parsed);
+            setAddDetails('');
         } catch (error) {
-            console.error("error: ", error)
+            console.error("Error:", error);
+            alert("Failed to generate ideas. Please try again.");
         } finally {
-            setLoading(false)
+            setLoading(false);
         }
     }
 
     async function handleExportPDF() {
+        if (typeof window === 'undefined') return;
         const element = document.querySelector('#exportpdf')
+        // Dynamically import html2pdf only on client-side
+        const html2pdf = (await import('html2pdf.js')).default;
+        
         if (element && parsedData) {
             const ideaName = parsedData.idea_name; 
             const fileName = `${ideaName}.pdf`;
@@ -76,7 +97,7 @@ export default function project_capstone() {
 
     return (
         <main className='w-[320px] min-[380px]:w-full h-full lg:w-4/5 lg:h-4/5 flex flex-col lg:flex-row gap-5 p-4 lg:p-0 cursor-default'>
-            <section className='w-full lg:w-2/5 flex min-w-0 flex-col gap-2 lg:gap-2'>
+            <section className='w-full  lg:w-2/5 flex min-w-0 flex-col gap-2 lg:gap-2'>
                 <h1 className='text-lg font-semibold'>Mini projects & Capstone ideas</h1>
                 <div className='w-full bg-white rounded-lg shadow-lg p-4 flex flex-col gap-3'>
                     <div>
@@ -115,7 +136,7 @@ export default function project_capstone() {
                 </div>
 
             </section>
-            <section className='w-full lg:w-3/5 h-full lg:h-auto py-4 px-6 lg:mt-9 bg-white rounded-lg shadow-lg'>
+            <section className='w-full lg:w-3/5 h-full lg:h-auto py-4 px-6 lg:mt-9 lg:overflow-y-auto bg-white rounded-lg shadow-lg'>
                 {loading ? (
                     <div className='w-full h-64 lg:h-full flex flex-col justify-center items-center'>
                         <img src="/run.gif" alt="Animated GIF" width={100} height={200} />
@@ -123,7 +144,7 @@ export default function project_capstone() {
                     </div>
                 ) : parsedData ? (
                     <section id='exportpdf'>
-                        <div className='flex items-center justify-between lg:mt-5'>
+                        <div className='flex items-center justify-between lg:mt-3'>
                             <h1 className='text-2xl font-semibold'>📌 {parsedData.idea_name}</h1>
                             <div data-html2canvas-ignore>
                                 <Download onClick={handleExportPDF}/>
