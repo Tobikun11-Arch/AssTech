@@ -45,7 +45,7 @@ export default function Generator() {
             <div className='order-2 sm:order-1 sm:min-h-screen'>
                 <Sidebar onTabChange={handleTabChange}/>
             </div>
-            <div className='sm:flex-grow bg-[#D6DCE1] dark:bg-[#D6DCE1] flex justify-center items-center order-1 sm:order-2'>
+            <div className='min-h-screen sm:flex-grow bg-[#D6DCE1] dark:bg-[#D6DCE1] flex justify-center items-center order-1 sm:order-2'>
                 {activeTab === 'how' && <Start/>}
                 {activeTab === 'compiler' && <Compilter/>}
                 {activeTab === 'assistant' && <Assistant/>}

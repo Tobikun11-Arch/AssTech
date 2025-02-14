@@ -8,6 +8,8 @@ import DifLevel from '../common/level'
 import { Lightbulb, Download } from 'lucide-react'
 import { useGenerator } from '@/app/state/generator_select'
 import Image from 'next/image'
+import domtoimage from "dom-to-image";
+import jsPDF from "jspdf";
 
 export default function project_capstone() {
     const { setLevelType, level_type, industry, ideas, project_type, add_details, setAddDetails } = useGenerator()
@@ -68,32 +70,36 @@ export default function project_capstone() {
     }
 
     async function handleExportPDF() {
-        if (typeof window === 'undefined') return;
-        const element = document.querySelector('#exportpdf')
-        // Dynamically import html2pdf only on client-side
-        const html2pdf = (await import('html2pdf.js')).default;
+        const element = document.getElementById("export-section");
+        if (!element) return;
+      
+        // Hide non-PDF elements before capture
+        const excludedElements = document.querySelectorAll(".exclude-from-pdf");
+        excludedElements.forEach(el => el.classList.add("hidden"));
+      
+        try {
+            const scale = 2;
+            const imgData = await domtoimage.toPng(element, {
+                width: element.offsetWidth * scale,
+                height: element.offsetHeight * scale,
+                style: {
+                transform: `scale(${scale})`,
+                transformOrigin: "top left"
+                }
+            });
         
-        if (element && parsedData) {
-            const ideaName = parsedData.idea_name; 
-            const fileName = `${ideaName}.pdf`;
-
-            const options = {
-                margin: 10,
-                filename: fileName,
-                html2canvas: {
-                    scale: 2,
-                    useCORS: true, 
-                },
-                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-            };
-            
-            try {
-                await html2pdf().set(options).from(element).save();
-            } catch (error) {
-                console.error('Error exporting PDF:', error);
-            }
+            const pdf = new jsPDF("p", "mm", "a4");
+            const pageWidth = 190;
+        
+            pdf.addImage(imgData, "PNG", 10, 10, pageWidth, 0);
+            pdf.save(`${parsedData?.idea_name}`);
+        } catch (error) {
+            console.error("Error generating PDF:", error);
+        } finally {
+            excludedElements.forEach(el => el.classList.remove("hidden"));
         }
     }
+    
 
     return (
         <main className='w-[320px] min-[380px]:w-full h-full lg:w-4/5 lg:h-4/5 flex flex-col lg:flex-row gap-5 p-4 lg:p-0 cursor-default'>
@@ -140,14 +146,14 @@ export default function project_capstone() {
                 {loading ? (
                     <div className='w-full h-64 lg:h-full flex flex-col justify-center items-center'>
                         <img src="/run.gif" alt="Animated GIF" width={100} height={200} />
-                        <h1 className='-mt-10'>On my wayyyy...</h1>
+                        <h1 className='-mt-10'>On my wayyy...</h1>
                     </div>
                 ) : parsedData ? (
-                    <section id='exportpdf'>
+                    <section id='export-section'>
                         <div className='flex items-center justify-between lg:mt-3'>
-                            <h1 className='text-2xl font-semibold'>📌 {parsedData.idea_name}</h1>
-                            <div data-html2canvas-ignore>
-                                <Download onClick={handleExportPDF}/>
+                            <h1 className='text-2xl font-semibold w-full'>📌 {parsedData.idea_name}</h1>
+                            <div className="exclude-from-pdf">
+                                <Download onClick={handleExportPDF} className="exclude-from-pdf"/>
                             </div> 
                         </div>
                        <div className='mt-5'>
