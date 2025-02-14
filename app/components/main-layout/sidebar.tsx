@@ -19,10 +19,42 @@ export default function sidebar({ onTabChange }: SidebarProps) {
                 />
             </div>
             <div className='flex flex-row sm:flex-col items-center sm:pt-56 gap-3'>
-                <div className='w-12 h-12 bg-white rounded-full' onClick={()=> onTabChange('home')}>Ideas</div>
-                <div className='w-12 h-12 bg-white rounded-full' onClick={()=> onTabChange('how')}>How</div>
-                <div className='w-12 h-12 bg-white rounded-full' onClick={()=> onTabChange('compiler')}></div>
-                <div className='w-12 h-12 bg-white rounded-full' onClick={()=> onTabChange('assistant')}></div> 
+                <div className='relative w-12 h-12 bg-white rounded-full overflow-hidden' onClick={()=> onTabChange('home')}>
+                    <Image
+                        fill
+                        alt='Capstone'
+                        src={'/capstone_logo.png'}
+                        loading='lazy'
+                        className='object-cover p-1'
+                    />
+                </div>
+                <div className='relative w-12 h-12 bg-white rounded-full overflow-hidden' onClick={()=> onTabChange('how')}>
+                    <Image
+                        fill
+                        alt='how to start'
+                        src={'/how-to-start.png'}
+                        loading='lazy'
+                        className='object-cover p-1'
+                    />
+                </div>
+                <div className='relative w-12 h-12 bg-white rounded-full overflow-hidden' onClick={()=> onTabChange('compiler')}>
+                    <Image
+                        fill
+                        alt='Online compiler'
+                        src={'/online-compiler.webp'}
+                        loading='lazy'
+                        className='object-cover'
+                    />
+                </div>
+                <div className='relative w-12 h-12 bg-white rounded-full overflow-hidden' onClick={()=> onTabChange('assistant')}>
+                    <Image
+                        fill
+                        alt='Assistant ai'
+                        src={'/assistant.jpg'}
+                        loading='lazy'
+                        className='object-cover'
+                    />
+                </div>
             </div>
         </div>
     )
