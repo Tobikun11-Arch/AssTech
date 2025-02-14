@@ -54,8 +54,8 @@ export default function project_capstone() {
     }
 
     return (
-        <main className='w-full h-full lg:w-4/5 lg:h-4/5 flex flex-col lg:flex-row gap-5 p-4 lg:p-0 cursor-default'>
-            <section className='w-full lg:w-2/5  flex flex-col gap-2 lg:gap-2'>
+        <main className='w-[320px] min-[380px]:w-full h-full lg:w-4/5 lg:h-4/5 flex flex-col lg:flex-row gap-5 p-4 lg:p-0 cursor-default'>
+            <section className='w-full lg:w-2/5 flex min-w-0 flex-col gap-2 lg:gap-2'>
                 <h1 className='text-lg font-semibold'>Mini projects & Capstone ideas</h1>
                 <div className='w-full bg-white rounded-lg shadow-lg p-4 flex flex-col gap-3'>
                     <div>
@@ -75,19 +75,19 @@ export default function project_capstone() {
 
                     <div className='w-full'>
                         <h4 className='font-semibold'>Difficulty level</h4>
-                        <div className='flex gap-2 w-full overflow-x-scroll'>
+                        <div className='flex gap-2 w-full overflow-x-auto'>
                             <DifLevel onclick={()=> setLevelType('Easy')} label='Easy'/>
                             <DifLevel onclick={()=> setLevelType('Medium')} label='Medium'/>
                             <DifLevel onclick={()=> setLevelType('Hard')} label='Hard'/>
                         </div>
                     </div>
 
-                    <button className='bg-blue-600 mt-2 text-white font-semibold py-2 rounded-md flex justify-center items-center' onClick={handleGenerate}>{loading ? "Generating..." : (<>Suggest Ideas <Lightbulb size={20}/></>)} </button>
+                    <button className='bg-blue-600 mt-2 text-white font-semibold py-2 rounded-md flex justify-center items-center' onClick={handleGenerate}>{loading ? "Thinking..." : (<>Suggest Ideas <Lightbulb size={20}/></>)} </button>
                 </div>
                 <div className="w-full lg:h-full bg-white rounded-lg shadow-lg p-4 flex flex-col">
                     <h4>Please specify the details of your mini project/capstone project (optional).</h4>
                     <textarea 
-                        className="w-full h-40 lg:flex-grow p-2 border border-gray-300 rounded-lg bg-gray-100 focus:outline-none resize-none"
+                        className="w-full lg:flex-grow p-2 border border-gray-300 rounded-lg bg-gray-100 focus:outline-none resize-none"
                         value={add_details}
                         onChange={(e) => setAddDetails(e.target.value)}
                     ></textarea>
@@ -96,8 +96,9 @@ export default function project_capstone() {
             </section>
             <section className='w-full lg:w-3/5 h-full lg:h-auto py-4 px-6 lg:mt-9 bg-white rounded-lg shadow-lg'>
                 {loading ? (
-                    <div className='w-full h-full flex flex-col justify-center items-center'>
-                        <img src="/run.gif" alt="Animated GIF" width={300} height={200} />
+                    <div className='w-full h-64 lg:h-full flex flex-col justify-center items-center'>
+                        <img src="/run.gif" alt="Animated GIF" width={100} height={200} />
+                        <h1 className='-mt-24 text-gray-400'>Thinking...</h1>
                     </div>
                 ) : parsedData ? (
                     <>
@@ -125,7 +126,7 @@ export default function project_capstone() {
                                 src={'/ass-tech-logo.png'}
                             />
                         </div>
-                        <h1 className='text-3xl font-bold text-gray-300'>Generate now!</h1>
+                        <h1 className='text-xl font-bold text-gray-300'>Your Next Project is One Click Away!🎨</h1>
                     </div>
                 )}
 
