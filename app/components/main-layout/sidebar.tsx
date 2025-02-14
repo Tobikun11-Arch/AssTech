@@ -13,47 +13,55 @@ export default function sidebar({ onTabChange }: SidebarProps) {
                 <Image
                     fill
                     alt='Ass tech logo'
-                    src={'/ass-tech-logo.png'}
+                    src={'/ass-tech-logo.png'}  
                     loading='lazy'
                     className='object-cover'
                 />
             </div>
             <div className='flex flex-row sm:flex-col items-center sm:pt-56 gap-3'>
-                <div className='relative w-12 h-12 bg-white rounded-full overflow-hidden' onClick={()=> onTabChange('home')}>
-                    <Image
-                        fill
-                        alt='Capstone'
-                        src={'/capstone_logo.png'}
-                        loading='lazy'
-                        className='object-cover p-1'
-                    />
+                <div className="tooltip sm:tooltip-right" data-tip="Capstone ideas & Mini projects">
+                    <div className='relative w-12 h-12 bg-white rounded-full overflow-hidden tooltip' onClick={()=> onTabChange('home')} >
+                        <Image
+                            fill
+                            alt='Capstone'
+                            src={'/capstone_logo.png'}
+                            loading='lazy'
+                            className='object-cover p-1'
+                        />
+                    </div>
                 </div>
-                <div className='relative w-12 h-12 bg-white rounded-full overflow-hidden' onClick={()=> onTabChange('how')}>
-                    <Image
-                        fill
-                        alt='how to start'
-                        src={'/how-to-start.png'}
-                        loading='lazy'
-                        className='object-cover p-1'
-                    />
+                <div className="tooltip sm:tooltip-right" data-tip="How to start learning">
+                    <div className='relative w-12 h-12 bg-white rounded-full overflow-hidden' onClick={()=> onTabChange('how')}>
+                        <Image
+                            fill
+                            alt='how to start'
+                            src={'/how-to-start.png'}
+                            loading='lazy'
+                            className='object-cover p-1'
+                        />
+                    </div>
                 </div>
-                <div className='relative w-12 h-12 bg-white rounded-full overflow-hidden' onClick={()=> onTabChange('compiler')}>
-                    <Image
-                        fill
-                        alt='Online compiler'
-                        src={'/online-compiler.webp'}
-                        loading='lazy'
-                        className='object-cover'
-                    />
+                <div className="tooltip sm:tooltip-right" data-tip="Online compiler">
+                    <div className='relative w-12 h-12 bg-white rounded-full overflow-hidden' onClick={()=> onTabChange('compiler')}>
+                        <Image
+                            fill
+                            alt='Online compiler'
+                            src={'/online-compiler.webp'}
+                            loading='lazy'
+                            className='object-cover'
+                        />
+                    </div>
                 </div>
-                <div className='relative w-12 h-12 bg-white rounded-full overflow-hidden' onClick={()=> onTabChange('assistant')}>
-                    <Image
-                        fill
-                        alt='Assistant ai'
-                        src={'/assistant.jpg'}
-                        loading='lazy'
-                        className='object-cover'
-                    />
+                <div className="tooltip sm:tooltip-right" data-tip="Need assistance?">
+                    <div className='relative w-12 h-12 bg-white rounded-full overflow-hidden' onClick={()=> onTabChange('assistant')}>
+                        <Image
+                            fill
+                            alt='Assistant ai'
+                            src={'/assistant.jpg'}
+                            loading='lazy'
+                            className='object-cover'
+                        />
+                    </div>
                 </div>
             </div>
         </div>

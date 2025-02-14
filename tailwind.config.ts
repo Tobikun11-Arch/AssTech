@@ -17,11 +17,12 @@ export default {
         'custom-pattern': 'repeating-radial-gradient(circle at 0 0, transparent 0, #22abd5 32px), repeating-linear-gradient(#171b88, #171b88)',
       },
       minWidth: {
-        '380': '380px', // 👈 Custom min-width class: min-w-380
+        '380': '380px', 
       },
     },
   },
   plugins: [
+    require("daisyui"),
     plugin(function ({ addUtilities }: { addUtilities: (utilities: Record<string, any>) => void }) {
       addUtilities({
         ".custom-bg": {
