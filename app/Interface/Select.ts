@@ -84,3 +84,15 @@ export const NonCodingSpecialization = [
     { id: 11, name: "Game Design" },
     { id: 12, name: "Cybersecurity Analysis" }
 ];
+
+export const DailyTimeCommitment = [
+    { id: 1, name: "1 hour" },
+    { id: 2, name: "2 hours" },
+    { id: 3, name: "3+ hours" }
+];
+
+export const ChallengeDuration = [
+    { id: 1, name: "30 days" },
+    { id: 2, name: "60 days" },
+    { id: 3, name: "90 days" }
+];

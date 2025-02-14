@@ -8,12 +8,12 @@ interface optionsTypes {
     options: optionsProps[]
 }
 
-export default function SpecializationSelector({ options }: optionsTypes) {
+export default function challengeSelector({ options }: optionsTypes) {
     const [selected, setSelected] = useState(options[0])
-    const { setSpecialization } = useHowToStart()
+    const { setChallengeDays } = useHowToStart()
 
     useEffect(()=> {
-        setSpecialization(selected.name)
+        setChallengeDays(selected.name)
     }, [selected])
 
     return (
@@ -27,7 +27,7 @@ export default function SpecializationSelector({ options }: optionsTypes) {
             </Listbox.Button>
 
             {/* Options */}
-            <Listbox.Options className="absolute z-10 mt-1 w-full bg-white border h-60 overflow-y-auto border-gray-300  rounded-lg shadow-md">
+            <Listbox.Options className="absolute z-10 mt-1 w-full bg-white border border-gray-300 rounded-lg shadow-md">
                 {options.map((option) => (
                 <Listbox.Option
                     key={option.id}
