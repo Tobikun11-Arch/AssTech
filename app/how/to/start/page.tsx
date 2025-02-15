@@ -9,35 +9,50 @@ import { useHowToStart } from '@/app/state/howSelector'
 export default function Page() {
     const { careerStack, specialization, time, challengeDays } = useHowToStart()
     const [ parsedData, setParsedData ] = useState<any | null>(null);
-    const [ isError, setError ] = useState<boolean>(false)
     const [ generate, setGenerate ] = useState<boolean>(false)
-    const [dailyTasks, setDailyTasks] = useState<{ day: number; task: string }[]>([]);
+    const [ challengeTitle, setTitle ] = useState<string>('');
+    const [ dailyTasks, setDailyTasks ] = useState<{ day: number; task: string }[]>([]);
+    const [ outcomes, setOutcomets ] = useState<string[]>([]);
 
     async function generatePlan() {
         setGenerate(true)
         const prompt = `Generate a personalized learning challenge based on the following criteria:
-            Career Path: ${careerStack}
-            Specialization: ${specialization}
-            Time Commitment: ${time}
-            Challenge Duration: ${challengeDays}
-            
-            Provide the response in JSON format with:
+        Career Path: ${careerStack}
+        Specialization: ${specialization}
+        Time Commitment: ${time}
+        Challenge Duration: ${challengeDays}
+
+        Provide the response in strict JSON format with:
+        {
+        "challenge_title": "Title of the challenge",
+        "learning_outcomes": ["Outcome1", "Outcome2", "Outcome3"],
+        "daily_tasks": [
             {
-            "challenge_title": "Title of the challenge",
-            "learning_outcomes": ["Outcome1", "Outcome2", "Outcome3"],
-            "daily_tasks": [
-                {
-                "day": 1,
-                "task": "Description of what to learn or do on this day."
-                },
-                {
-                "day": 2,
-                "task": "Next task description."
-                },
-                to ${challengeDays}
-            ],
-            "resources": ["Resource1", "Resource2", "Resource3"]
-        }`;
+            "day": 1,
+            "task": "Description of what to learn or do on this day."
+            },
+            {
+            "day": 2,
+            "task": "Next task description."
+            },
+            {
+            "day": 90,
+            "task": "Final Project Submission and Review. Deploy your complete full-stack application."
+            }
+        ],
+        "resources": ["Resource1", "Resource2", "Resource3"]
+        }
+
+        **Rules:**
+        1. If you cannot generate all tasks individually, replace missing tasks with a structured entry:
+        example you cant generate the part of day, but this is only example if u still can generate, generate it and if you
+        go the day that cant, just put an what they will do in that days
+        **"day": "(what day u stop generate - until what days u cant generate", "task": "please provide what they will do in that time"**  
+        2. **Do not generate incomplete days** (e.g., "day": 65, "task": ... should not exist).  
+        3. **Do not use unstructured placeholders** like "and continue until Day 90".  
+
+        Ensure the response is a **valid JSON** without any syntax errors, extra comments, or markdown formatting.`;
+
 
         try {
             const res = await fetch('http://localhost:5000/challenges/request', {
@@ -65,7 +80,6 @@ export default function Page() {
                 setParsedData(response);
             } catch (error) {
                 console.error("Error parsing response:", error);
-                setError(true); // Set error state
             }
         } catch (error) {
             console.error("Error:", error);
@@ -74,23 +88,40 @@ export default function Page() {
         }
     }
 
-    useEffect(()=> {
+    useEffect(() => {
         const rawData = parsedData?.message ?? ""; // Ensure rawData is a string
         if (rawData) {
-            const jsonString = rawData.replace(/```json|```/g, ""); // Remove markdown formatting
+            let jsonString = rawData.replace(/```json|```/g, "").trim(); // Remove markdown code block
+    
+            // Function to remove AI-generated comments
+            const sanitizeJSON = (json: string): string => {
+                return json.replace(/\/\*[\s\S]*?\*\//g, ''); // Removes /* comments */
+            };
+    
             try {
-                const parsedJson = JSON.parse(jsonString); // Convert string to object
+                if (!jsonString.startsWith("{") && !jsonString.startsWith("[")) {
+                    throw new Error("Invalid JSON format detected.");
+                }
+    
+                // Remove AI-generated comments before parsing
+                const cleanedJsonString = sanitizeJSON(jsonString);
+                const parsedJson = JSON.parse(cleanedJsonString);
+    
+                const challengeTitle = parsedJson.challenge_title || "";
                 const tasks = parsedJson.daily_tasks || [];
-
-                const learningOutcomes = parsedJson.learning_outcomes || []
-                setDailyTasks(tasks); 
+                const learningOutcomes = parsedJson.learning_outcomes || [];
+    
+                setTitle(challengeTitle);
+                setDailyTasks(tasks);
+                setOutcomets(learningOutcomes);
             } catch (error) {
-                console.error("JSON parsing error:", error);
-                setError(true);
+                console.error("JSON parsing error:", error, "Raw data:", jsonString);
             }
         }
-    }, [parsedData])
+    }, [parsedData]);
     
+    
+        
 
     return (
         <main className='h-full xl:w-4/5 w-full lg:px-10 px-4 py-4 flex flex-col justify-center items-start'>
@@ -116,9 +147,12 @@ export default function Page() {
                     <button className='w-full bg-green-600 text-white py-2 rounded-md mt-12' onClick={generatePlan}>{generate ? 'Generating...' : 'Generate learning plan'}</button>
                 </div>
 
-                <div className='p-4 bg-white shadow-md rounded-md w-full lg:w-3/5 overflow-y-auto'>
-                <h1>Learning Outcomes</h1>
+                <div className='p-4 bg-white shadow-md rounded-md w-full lg:w-3/5 h-[440px] overflow-y-auto flex flex-col'>
+                    <h1>Challenge Title: {challengeTitle}</h1>
                     <ul>
+                        {outcomes.map((outcomes, index)=> (
+                            <li key={index}>{outcomes}</li>
+                        ))}
                         {dailyTasks.map((task) => (
                             <li key={task.day}>Day {task.day}: {task.task}</li>
                         ))}
