@@ -42,7 +42,6 @@ export default function project_capstone() {
             });
     
             const rawResponse = await res.text();
-            console.log("Raw Response:", rawResponse);
     
             // Check if the response is valid JSON
             let response;
@@ -63,7 +62,6 @@ export default function project_capstone() {
             setAddDetails('');
         } catch (error) {
             console.error("Error:", error);
-            alert("Failed to generate ideas. Please try again.");
         } finally {
             setLoading(false);
         }
