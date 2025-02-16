@@ -5,14 +5,19 @@ import CommitSelector from '@/app/components/how-to-start/commitDaily'
 import ChallengeSelector from '@/app/components/how-to-start/challengeDuration'
 import { CareerType, CodingSpecialization, NonCodingSpecialization, DailyTimeCommitment, ChallengeDuration } from '@/app/Interface/Select'
 import { useHowToStart } from '@/app/state/howSelector'
+import { Download } from 'lucide-react'
+import Image from 'next/image'
+import domtoimage from "dom-to-image";
+import jsPDF from "jspdf";
 
 export default function Page() {
     const { careerStack, specialization, time, challengeDays } = useHowToStart()
     const [ parsedData, setParsedData ] = useState<any | null>(null);
     const [ generate, setGenerate ] = useState<boolean>(false)
     const [ challengeTitle, setTitle ] = useState<string>('');
-    const [ dailyTasks, setDailyTasks ] = useState<{ day: number; task: string }[]>([]);
+    const [ dailyTasks, setDailyTasks ] = useState<{ day: string; task: string }[]>([]);
     const [ outcomes, setOutcomets ] = useState<string[]>([]);
+    const [ download, setDownload ] = useState<boolean>(false)
 
     async function generatePlan() {
         setGenerate(true)
@@ -28,15 +33,15 @@ export default function Page() {
         "learning_outcomes": ["Outcome1", "Outcome2", "Outcome3"],
         "daily_tasks": [
             {
-            "day": 1,
+            "day": "1",
             "task": "Description of what to learn or do on this day."
             },
             {
-            "day": 2,
+            "day": "2",
             "task": "Next task description."
             },
             {
-            "day": 90,
+            "day": "90",
             "task": "Final Project Submission and Review. Deploy your complete full-stack application."
             }
         ],
@@ -120,43 +125,111 @@ export default function Page() {
         }
     }, [parsedData]);
     
+    async function handleExportPDF() {
+        setDownload(true)
+        const element = document.getElementById("export-section");
+        if (!element) return;
     
-        
+        // Temporarily remove overflow to capture full content
+        element.classList.remove("overflow-y-auto");
+    
+        try {
+            const scale = 2;
+            const imgData = await domtoimage.toPng(element, {
+                width: element.scrollWidth * scale,
+                height: element.scrollHeight * scale,
+                style: {
+                    transform: `scale(${scale})`,
+                    transformOrigin: "top left",
+                },
+            });
+    
+            const imgWidth = 190; // Fit width of A4 page
+            const imgHeight = (element.scrollHeight * imgWidth) / element.scrollWidth;
+    
+            // Create a custom-sized PDF based on the content height
+            const pdf = new jsPDF({
+                orientation: "p",
+                unit: "mm",
+                format: [210, imgHeight + 20], // Width = 210mm (A4), Height = content height + padding
+            });
+    
+            pdf.addImage(imgData, "PNG", 10, 10, imgWidth, imgHeight);
+            pdf.save(`${challengeTitle}`);
+    
+        } catch (error) {
+            console.error("Error generating PDF:", error);
+        } finally {
+            element.classList.add("overflow-y-auto");
+            setDownload(false)
+        }
+    }
+    
 
     return (
         <main className='h-full xl:w-4/5 w-full lg:px-10 px-4 py-4 flex flex-col justify-center items-start'>
-            <h1 className='text-xl font-semibold'>🚀Choose Your Learning Path</h1>
-            <div className='flex gap-3 flex-col lg:flex-row  w-full'>
-                <div className='px-4 pt-6 pb-4 bg-white shadow-md rounded-md w-full lg:w-2/5 flex flex-col gap-3'>
-                   <div>
-                        <h4 className='font-semibold'>Choose a Career Track</h4>
-                        <CareerSelector options={CareerType}/>
+            <h1 className='text-xl font-semibold'>Learn with us!</h1>
+            <div className='flex gap-3 flex-col lg:flex-row w-full'>
+                <div className='px-4 pt-6 pb-4 bg-white shadow-md rounded-md w-full lg:w-2/5 flex flex-col justify-between h-[450px]'>
+                   <div className='flex flex-col gap-3'>
+                        <div>
+                            <h4 className='font-semibold'>Choose a Career Track</h4>
+                            <CareerSelector options={CareerType}/>
+                        </div>
+                        <div>
+                            <h4 className='font-semibold'>Select Your Specialization</h4>
+                            <SpecializationSelector options={careerStack !== 'Developer Track' ? NonCodingSpecialization : CodingSpecialization}/>
+                        </div>
+                        <div>
+                            <h4 className='font-semibold'>How much time can you commit daily?</h4>
+                            <CommitSelector options={DailyTimeCommitment}/>
+                        </div>
+                        <div>
+                            <h4 className='font-semibold'>Pick Your Learning Challenge Duration</h4>
+                            <ChallengeSelector options={ChallengeDuration}/>
+                        </div> 
                    </div>
-                   <div>
-                        <h4 className='font-semibold'>Select Your Specialization</h4>
-                        <SpecializationSelector options={careerStack !== 'Developer Track' ? NonCodingSpecialization : CodingSpecialization}/>
-                   </div>
-                    <div>
-                        <h4 className='font-semibold'>How much time can you commit daily?</h4>
-                        <CommitSelector options={DailyTimeCommitment}/>
-                    </div>
-                    <div>
-                        <h4 className='font-semibold'>Pick Your Learning Challenge Duration</h4>
-                        <ChallengeSelector options={ChallengeDuration}/>
-                    </div> 
-                    <button className='w-full bg-green-600 text-white py-2 rounded-md mt-12' onClick={generatePlan}>{generate ? 'Generating...' : 'Generate learning plan'}</button>
+                    <button className='w-full bg-green-600 text-white py-2 rounded-md' onClick={generatePlan}>{generate ? 'Generating...' : 'Generate learning plan'}</button>
                 </div>
 
-                <div className='p-4 bg-white shadow-md rounded-md w-full lg:w-3/5 h-[440px] overflow-y-auto flex flex-col'>
-                    <h1>Challenge Title: {challengeTitle}</h1>
-                    <ul>
-                        {outcomes.map((outcomes, index)=> (
-                            <li key={index}>{outcomes}</li>
-                        ))}
-                        {dailyTasks.map((task) => (
-                            <li key={task.day}>Day {task.day}: {task.task}</li>
-                        ))}
-                    </ul>
+                <div className='p-4 bg-white shadow-md rounded-md w-full lg:w-3/5 flex flex-col'>
+                    {generate ? (
+                       <div className='w-full h-64 lg:h-full flex flex-col justify-center items-center'>
+                            <img src="/generating.gif" alt="Animated GIF" width={100} height={200} />
+                            <h1 className='text-gray-500'>To see is to wait...</h1>
+                       </div>
+                    ) : parsedData ? (
+                        <div className={`h-[440px] ${download && 'h-full'} overflow-y-auto`} id='export-section'>
+                            <div className='flex justify-between items-center'>
+                                <h1 className='text-xl font-semibold'>{challengeTitle}</h1>
+                                <div className="exclude-from-pdf pr-2">
+                                    <Download size={20} onClick={handleExportPDF} className="exclude-from-pdf"/>
+                                </div> 
+                            </div>
+                            <ul className='mt-5'>
+                                <h1 className='text-base font-semibold italic'>Key Objectives</h1>
+                                {outcomes.map((outcome, index) => (
+                                    <li key={index} className=''>{outcome}</li>
+                                ))}
+                                <div className='mt-3'></div>
+                                {dailyTasks.map((task) => (
+                                    <li key={task.day} className='pt-1'><span className='font-semibold'>Day {task.day}:</span> {task.task}</li>
+                                ))}
+                            </ul>
+                        </div>  
+                    ) : (
+                        <div className='w-full h-[440px] flex flex-col justify-center items-center'>
+                            <div className='h-48 w-48 relative'>
+                                <Image
+                                    fill
+                                    loading='lazy'
+                                    alt='Ass Tech Logo'
+                                    src={'/ass-tech-logo.png'}
+                                />
+                            </div>
+                            <h1 className='text-xl font-bold text-gray-300'>Let us assist you! 💻</h1>
+                        </div>
+                    )}
                 </div>
             </div>
         </main>

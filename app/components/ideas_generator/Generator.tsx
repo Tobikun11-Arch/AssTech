@@ -41,7 +41,7 @@ export default function Generator() {
     };
 
     return (
-       <main className='min-h-screen flex flex-col sm:flex-row'>
+       <main className='min-h-screen flex flex-col sm:flex-row dark:text-black'>
             <div className='order-2 sm:order-1 sm:min-h-screen'>
                 <Sidebar onTabChange={handleTabChange}/>
             </div>
