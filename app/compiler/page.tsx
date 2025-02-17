@@ -14,6 +14,7 @@ export default function Page() {
     const [ run, setRun ] = useState<boolean>(false)
     const [ languageData, setLanguageData ] = useState(PythonJson);
     const [ search, setSearch ] = useState<string>('')
+    const [ assist, setAssist ] = useState<boolean>(false)
 
     async function handleRun() {    
         setRun(true)
@@ -100,34 +101,38 @@ export default function Page() {
         }
     };
 
-    // useEffect(()=> {
-    //     const prompt = `what is ${language}` change this later for asking syntax of an language
-
-    //     const fetchlanguage = async() => {
-    //         try {
-    //             const res = await fetch('http://localhost:5000/language/define', {
-    //                 method: "POST",
-    //                 headers: {
-    //                     "Content-Type": "application/json",
-    //                 },
-    //                 body: JSON.stringify({ prompt })
-    //             })
-    //             const response = await res.json()
-
-    //             console.log("response: ", response)
-    //         } catch (error) {
-    //             console.error("failed to fetch: ", error)
-    //         }
-    //     }
-    //     fetchlanguage()
-    // }, [language])
-
     async function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
         if (e.key === 'Enter') {
             if(!search) {
                 return
             } else {
+                setAssist(true)
+                const prompt = `
+                Give me an example of ${search}, which is related to syntax or any coding concept in ${language}.
+                If the ${search} is not related to syntax or any kind of code related to ${language}, please respond with "Not related to language."
+                If it is related, provide an example of that syntax or concept in ${language}.
 
+                For example, if the user searches for "data types" in Python, this is the expected response:
+                Text Type: 	str
+                Numeric Types: 	int, float, complex
+                Sequence Types: 	list, tuple, range
+                Mapping Type: 	dict
+                Set Types: 	set, frozenset
+                Boolean Type: 	bool
+                Binary Types: 	bytes, bytearray, memoryview
+                None Type: 	NoneType
+                `;
+
+                const res = await fetch('http://localhost:5000/language/syntax', {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ prompt })
+                })
+                const response = await res.json()
+                setAssist(false)
+                console.log("Response: ", response)
             }
         }
     }
@@ -140,9 +145,17 @@ export default function Page() {
                 <input type="text" placeholder={`Search ${language} syntax or code examples...`} className='outline-none p-2 h-10 border w-full rounded-md mt-10' onKeyDown={handleKeyDown} value={search} onChange={(e)=> setSearch(e.target.value)}/>
                 <p className='text-blue-600 text-xs pl-2'>Need help?</p>
                 <div className='w-full h-72 border p-2 mt-5 overflow-y-auto'>
-                    <h2 className='font-semibold text-xl'>{languageData.language}</h2>
-                    <p>{languageData.description}</p>
-                    <h3 className='mt-2'><span className='font-semibold'>Why Use?</span> {languageData.whyUse}?</h3>
+                    {assist ? (
+                        <>
+                            <h1>Loading</h1>
+                        </>
+                    ) : (
+                        <>
+                            <h2 className='font-semibold text-xl'>{languageData.language}</h2>
+                            <p>{languageData.description}</p>
+                            <h3 className='mt-2'><span className='font-semibold'>Why Use?</span> {languageData.whyUse}?</h3>
+                        </>
+                    )}
                 </div>
             </div>
 
