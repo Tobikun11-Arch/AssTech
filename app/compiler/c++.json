@@ -1,0 +1,8 @@
+{
+    "language": "C++",
+    "description": "C++ is a high-performance, compiled language widely used for system software, game development, and applications requiring high-speed execution. It supports both object-oriented and procedural programming.",
+    "whyUse": [
+        "Performance – Known for its ability to manage system resources efficiently, making it ideal for performance-critical applications.",
+        "Portability – Runs on virtually all platforms and is highly compatible with low-level system programming."
+    ]
+}

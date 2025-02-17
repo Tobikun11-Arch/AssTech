@@ -1,0 +1,8 @@
+{
+    "language": "Java",
+    "description": "Java is a high-level, object-oriented programming language designed for portability across platforms. It's widely used for building web applications, Android apps, and enterprise-level systems.",
+    "whyUse": [
+        "Write Once, Run Anywhere – Java programs can run on any platform with a Java Virtual Machine (JVM).",
+        "Large Ecosystem – Extensive libraries, frameworks, and tools available for almost any development need."
+    ]
+}

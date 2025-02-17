@@ -1,0 +1,8 @@
+{
+    "language": "Rust",
+    "description": "Rust is a systems programming language known for its memory safety features and performance. It is designed to eliminate common programming errors such as null pointer dereferencing and data races, making it suitable for high-concurrency applications.",
+    "whyUse": [
+        "Memory Safety – Eliminates many common bugs such as memory leaks and buffer overflows while maintaining high performance.",
+        "Concurrency – Rust's ownership system ensures safe parallelism and concurrency without the risk of data races."
+    ]
+}

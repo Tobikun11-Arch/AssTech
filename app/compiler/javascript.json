@@ -1,0 +1,8 @@
+{
+    "language": "JavaScript",
+    "description": "JavaScript is a high-level, interpreted programming language primarily used for web development. It allows developers to create interactive web pages by manipulating the Document Object Model (DOM).",
+    "whyUse": [
+        "Versatile – Can be used for frontend, backend, mobile apps, and even game development.",
+        "Cross-Platform – Runs in all modern web browsers without needing additional software."
+    ]
+}

@@ -135,26 +135,29 @@ export default function Page() {
     
         try {
             const scale = 2;
+            const contentWidth = element.scrollWidth * scale;
+            const contentHeight = element.scrollHeight * scale;    
+
             const imgData = await domtoimage.toPng(element, {
-                width: element.scrollWidth * scale,
-                height: element.scrollHeight * scale,
+                width: contentWidth,
+                height: contentHeight,
                 style: {
                     transform: `scale(${scale})`,
                     transformOrigin: "top left",
                 },
             });
     
-            const imgWidth = 190; // Fit width of A4 page
-            const imgHeight = (element.scrollHeight * imgWidth) / element.scrollWidth;
+            const pdfWidth = Math.min(210, contentWidth / scale); // Max 210mm (A4 width)
+            const pdfHeight = (contentHeight / contentWidth) * pdfWidth;
     
             // Create a custom-sized PDF based on the content height
             const pdf = new jsPDF({
-                orientation: "p",
+                orientation: pdfWidth > pdfHeight ? "l" : "p", // Landscape if width > height
                 unit: "mm",
-                format: [210, imgHeight + 20], // Width = 210mm (A4), Height = content height + padding
+                format: [pdfWidth + 20, pdfHeight + 20], // Add padding
             });
     
-            pdf.addImage(imgData, "PNG", 10, 10, imgWidth, imgHeight);
+            pdf.addImage(imgData, "PNG", 10, 10, pdfWidth, pdfHeight);
             pdf.save(`${challengeTitle}`);
     
         } catch (error) {

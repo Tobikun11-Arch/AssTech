@@ -1,0 +1,8 @@
+{
+    "language": "C#",
+    "description": "C# is a modern, object-oriented programming language developed by Microsoft for building a wide range of applications, from web apps to game development using the Unity engine.",
+    "whyUse": [
+        "Rich Ecosystem – Supported by a vast collection of frameworks like .NET for building enterprise applications.",
+        "Game Development – C# is the primary language for Unity, making it a top choice for game development."
+    ]
+}

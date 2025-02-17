@@ -1,0 +1,8 @@
+{
+    "language": "C",
+    "description": "C is a low-level, procedural programming language that is foundational to modern computing. It is widely used for system programming and embedded systems due to its efficiency and control over hardware.",
+    "whyUse": [
+        "Efficiency – Offers fine-grained control over hardware and system resources, making it suitable for low-level programming.",
+        "Portability – C code can be easily ported to various platforms with minimal changes."
+    ]
+}
