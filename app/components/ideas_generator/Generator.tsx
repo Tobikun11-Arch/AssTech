@@ -41,8 +41,8 @@ function TabHandler() {
 
     return (
         <main className='min-h-screen flex flex-col sm:flex-row dark:text-black'>
-            <div className='order-2 sm:order-1 sm:min-h-screen'>
-                <Sidebar onTabChange={handleTabChange}/>
+            <div className='order-2 sm:order-1 sm:min-h-screen sticky bottom-0'>
+                <Sidebar onTabChange={handleTabChange}/> 
             </div>
             <div className='min-h-screen sm:flex-grow bg-white dark:bg-[#D6DCE1] flex justify-center items-center order-1 sm:order-2'>
                 {activeTab === 'how' && <Start/>}
