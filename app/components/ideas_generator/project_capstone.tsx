@@ -47,8 +47,8 @@ export default function ProjectCapstone() {
             let response;
             try {
                 response = JSON.parse(rawResponse);
-            } catch (e) {
-                throw new Error("Invalid JSON response from the server");
+            } catch (error) {
+                console.error("Invalid JSON response from the server: ", error);
             }
     
             // Check if the response contains the expected field

@@ -11,9 +11,17 @@ import Image from 'next/image'
 import domtoimage from "dom-to-image";
 import jsPDF from "jspdf";
 
+interface LearningPlan {
+    challenge_title: string;
+    learning_outcomes: string[];
+    daily_tasks: { day: string; task: string }[];
+    resources: string[];
+    message: string
+}
+
 export default function Page() {
     const { careerStack, specialization, time, challengeDays } = useHowToStart()
-    const [ parsedData, setParsedData ] = useState<any | null>(null);
+    const [parsedData, setParsedData] = useState<LearningPlan | null>(null);
     const [ generate, setGenerate ] = useState<boolean>(false)
     const [ challengeTitle, setTitle ] = useState<string>('');
     const [ dailyTasks, setDailyTasks ] = useState<{ day: string; task: string }[]>([]);
@@ -80,7 +88,7 @@ export default function Page() {
                     throw new Error("Invalid JSON response");
                 }
             
-                const response = JSON.parse(cleanedResponse);
+                const response: LearningPlan = JSON.parse(cleanedResponse);
                 console.log("Parsed: ", response);
             
                 setParsedData(response);
