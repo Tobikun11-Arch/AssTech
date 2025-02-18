@@ -104,7 +104,7 @@ export default function Page() {
     };
 
     return (
-        <main className='w-full h- p-4 lg:p-10 cursor-default flex flex-col lg:flex-row gap-3'>
+        <main className='w-full h- p-4 lg:p-10 cursor-default flex flex-col lg:flex-row gap-3 text-white dark:text-white'>
             <div className='shadow-lg rounded-md p-4 bg-white w-full lg:w-2/5 h-full'>
                 <h1 className='text-xl font-semibold'>AssTech Online Compiler</h1>
 
