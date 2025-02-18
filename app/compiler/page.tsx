@@ -20,7 +20,8 @@ export default function Page() {
     async function handleRun() {    
         setRun(true)
         try {
-            const response = await fetch('https://emkc.org/api/v2/piston/execute', {
+            const pistonApi = process.env.NEXT_PUBLIC_PISTON
+            const response = await fetch(`${pistonApi}`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

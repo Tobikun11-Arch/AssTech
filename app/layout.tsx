@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "AssTech - Help newbie to learn",
-  description: "Want to learn programming",
+  title: "AssTech - Learn, Grow, and Succeed in Tech",
+  description: "The best place to learn programming",
   icons: {
     icon: [
       { url: "/ass-tech-logo.png", type: "image/png", sizes: "32x32" }, // Favicon
@@ -24,13 +24,13 @@ export const metadata: Metadata = {
     apple: "/ass-tech-logo.png", // Apple Touch Icon
   },
   openGraph: {
-    title: "AssTech",
+    title: "AssTech - Learn, Grow, and Succeed in Tech",
     description: "The best place to learn programming",
     url: "asstech.vercel.app", 
     type: "website",
     images: [
       {
-        url: "/ass-tech-logo.png", // Social media preview image (1200x630 recommended)
+        url: "/url.png", // Social media preview image (1200x630 recommended)
         width: 1200,
         height: 630,
         alt: "Asstech Preview",

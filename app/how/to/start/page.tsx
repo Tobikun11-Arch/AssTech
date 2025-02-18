@@ -69,7 +69,8 @@ export default function Page() {
 
 
         try {
-            const res = await fetch('http://localhost:5000/challenges/request', {
+            const challengesFetch = process.env.NEXT_PUBLIC_CHALLENGE
+            const res = await fetch(`${challengesFetch}`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -78,8 +79,7 @@ export default function Page() {
             })
     
             try {
-                const rawResponse = await res.text();
-                console.log("rawResponse: ", rawResponse);
+                const rawResponse = await res.text()
             
                 const cleanedResponse = rawResponse.replace(/^json\n/, "").trim();
             
@@ -89,7 +89,6 @@ export default function Page() {
                 }
             
                 const response: LearningPlan = JSON.parse(cleanedResponse);
-                console.log("Parsed: ", response);
             
                 setParsedData(response);
             } catch (error) {

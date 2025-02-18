@@ -33,7 +33,8 @@ export default function ProjectCapstone() {
         }`;
     
         try {
-            const res = await fetch('http://localhost:5000/add/data', {
+            const generateIdeas = process.env.NEXT_PUBLIC_IDEAS
+            const res = await fetch(`${generateIdeas}`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
