@@ -11,6 +11,7 @@
   "dependencies": {
     "@headlessui/react": "^2.2.0",
     "@tanstack/react-query": "^5.66.0",
+    "@vercel/speed-insights": "^1.2.0",
     "ass-tech": "file:",
     "daisyui": "^4.12.23",
     "dom-to-image": "^2.6.0",
