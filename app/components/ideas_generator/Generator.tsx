@@ -58,7 +58,7 @@ function TabHandler() {
 
 export default function Generator() {
     return (
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={<div className='h-screen w-full bg-white dark:bg-white'></div>}>
             <TabHandler />
         </Suspense>
     );
