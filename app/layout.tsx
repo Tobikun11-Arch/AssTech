@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "/url.png", // Social media preview image (1200x630 recommended)
+        url: "/openGraphUrl.png", // Social media preview image (1200x630 recommended)
         width: 1200,
         height: 630,
         alt: "Asstech Preview",
