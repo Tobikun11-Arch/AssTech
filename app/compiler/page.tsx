@@ -104,7 +104,7 @@ export default function Page() {
     };
 
     return (
-        <main className='w-full h- p-4 lg:p-10 cursor-default flex flex-col lg:flex-row gap-3 text-white dark:text-white'>
+        <main className='w-full h- p-4 lg:p-10 cursor-default flex flex-col lg:flex-row gap-3'>
             <div className='shadow-lg rounded-md p-4 bg-white w-full lg:w-2/5 h-full'>
                 <h1 className='text-xl font-semibold'>AssTech Online Compiler</h1>
 
@@ -119,7 +119,7 @@ export default function Page() {
             {/**Another dim */}
             <div className='w-full lg:w-3/5 h-full bg-white shadow-lg rounded-md p-4'>
                 <div className='w-full flex justify-between items-center'>
-                    <select onChange={handleLanguageChange} value={language} className='py-1 px-2 rounded-md text-black dark:text-black dark:bg-white border'>
+                    <select onChange={handleLanguageChange} value={language} className='py-1 px-2 rounded-md dark:bg-white bg-white border'>
                         <option value="python3">Python 3</option>
                         <option value="javascript">JavaScript</option>
                         <option value="cpp">C++</option>
