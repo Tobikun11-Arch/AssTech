@@ -26,11 +26,11 @@ export const metadata: Metadata = {
   openGraph: {
     title: "AssTech",
     description: "The best place to learn programming",
-    url: "place/new/url.com", 
+    url: "asstech.vercel.app", 
     type: "website",
     images: [
       {
-        url: "/og-image.webp", // Social media preview image (1200x630 recommended)
+        url: "/ass-tech-logo.png", // Social media preview image (1200x630 recommended)
         width: 1200,
         height: 630,
         alt: "Asstech Preview",
