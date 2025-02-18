@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import PythonJson from './python.json'
 import JSJson from './javascript.json'
 import CppJson from './c++.json'
@@ -6,6 +6,7 @@ import CJson from './C.json'
 import JavaJson from './java.json'
 import RustJson from './rust.json'
 import CsharpJson from './c#.json'
+import { useDynamicTab } from '../state/dynamicTab'
 
 export default function Page() {
     const [ language, setLanguage ] = useState("python3")
@@ -13,8 +14,7 @@ export default function Page() {
     const [ output, setOutput ] = useState("");
     const [ run, setRun ] = useState<boolean>(false)
     const [ languageData, setLanguageData ] = useState(PythonJson);
-    const [ search, setSearch ] = useState<string>('')
-    const [ assist, setAssist ] = useState<boolean>(false)
+    const { setActiveTab } = useDynamicTab()
 
     async function handleRun() {    
         setRun(true)
@@ -101,66 +101,21 @@ export default function Page() {
         }
     };
 
-    async function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
-        if (e.key === 'Enter') {
-            if(!search) {
-                return
-            } else {
-                setAssist(true)
-                const prompt = `
-                Give me an example of ${search}, which is related to syntax or any coding concept in ${language}.
-                If the ${search} is not related to syntax or any kind of code related to ${language}, please respond with "Not related to language."
-                If it is related, provide an example of that syntax or concept in ${language}.
-
-                For example, if the user searches for "data types" in Python, this is the expected response:
-                Text Type: 	str
-                Numeric Types: 	int, float, complex
-                Sequence Types: 	list, tuple, range
-                Mapping Type: 	dict
-                Set Types: 	set, frozenset
-                Boolean Type: 	bool
-                Binary Types: 	bytes, bytearray, memoryview
-                None Type: 	NoneType
-                `;
-
-                const res = await fetch('http://localhost:5000/language/syntax', {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({ prompt })
-                })
-                const response = await res.json()
-                setAssist(false)
-                console.log("Response: ", response)
-            }
-        }
-    }
-
     return (
         <main className='w-full h- p-4 lg:p-10 cursor-default flex flex-col lg:flex-row gap-3'>
-            <div className='shadow-md rounded-md p-4 bg-white w-full lg:w-2/5 h-full'>
+            <div className='shadow-lg rounded-md p-4 bg-white w-full lg:w-2/5 h-full'>
                 <h1 className='text-xl font-semibold'>AssTech Online Compiler</h1>
 
-                <input type="text" placeholder={`Search ${language} syntax or code examples...`} className='outline-none p-2 h-10 border w-full rounded-md mt-10' onKeyDown={handleKeyDown} value={search} onChange={(e)=> setSearch(e.target.value)}/>
-                <p className='text-blue-600 text-xs pl-2'>Need help?</p>
+                <p className='text-blue-600 text-xs' onClick={()=> setActiveTab('assistant')}>Need help?</p>
                 <div className='w-full h-72 border p-2 mt-5 overflow-y-auto'>
-                    {assist ? (
-                        <>
-                            <h1>Loading</h1>
-                        </>
-                    ) : (
-                        <>
-                            <h2 className='font-semibold text-xl'>{languageData.language}</h2>
-                            <p>{languageData.description}</p>
-                            <h3 className='mt-2'><span className='font-semibold'>Why Use?</span> {languageData.whyUse}?</h3>
-                        </>
-                    )}
+                    <h2 className='font-semibold text-xl'>{languageData.language}</h2>
+                    <p>{languageData.description}</p>
+                    <h3 className='mt-2'><span className='font-semibold'>Why Use?</span> {languageData.whyUse}?</h3>
                 </div>
             </div>
 
             {/**Another dim */}
-            <div className='w-full lg:w-3/5 h-full bg-white shadow-md rounded-md p-4'>
+            <div className='w-full lg:w-3/5 h-full bg-white shadow-lg rounded-md p-4'>
                 <div className='w-full flex justify-between items-center'>
                     <select onChange={handleLanguageChange} value={language} className='py-1 px-2 rounded-md'>
                         <option value="python3">Python 3</option>
