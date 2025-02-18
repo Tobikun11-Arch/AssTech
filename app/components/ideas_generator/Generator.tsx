@@ -4,7 +4,7 @@ import { useDynamicTab } from '@/app/state/dynamicTab'
 import Start from '@/app/how/to/start/page'
 import Compilter from '@/app/compiler/page'
 import Assistant from '@/app/lost_programmer/Assistant'
-import { useEffect } from 'react'
+import { useEffect, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Ideas from './project_capstone'
 
@@ -20,8 +20,7 @@ const reverseTabMapping: Record<string, string> = Object.fromEntries(
     Object.entries(tabIdMapping).map(([key, value]) => [value, key])
 );
 
-
-export default function Generator() {
+function TabHandler() {
     const { activeTab, setActiveTab } = useDynamicTab()
     const router = useRouter();
     const searchParams = useSearchParams();
@@ -41,7 +40,7 @@ export default function Generator() {
     };
 
     return (
-       <main className='min-h-screen flex flex-col sm:flex-row dark:text-black'>
+        <main className='min-h-screen flex flex-col sm:flex-row dark:text-black'>
             <div className='order-2 sm:order-1 sm:min-h-screen'>
                 <Sidebar onTabChange={handleTabChange}/>
             </div>
@@ -53,6 +52,14 @@ export default function Generator() {
                 {/**Main dashboard */}
                 {activeTab === 'home' && <Ideas/>}
             </div>
-       </main>
+        </main>
     )
-}   
+}
+
+export default function Generator() {
+    return (
+        <Suspense fallback={<div>Loading...</div>}>
+            <TabHandler />
+        </Suspense>
+    );
+}
