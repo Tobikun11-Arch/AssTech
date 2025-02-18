@@ -1,3 +1,4 @@
+"use client"
 import React, { useEffect, useState } from 'react'
 import CareerSelector from '@/app/components/how-to-start/career_choice'
 import SpecializationSelector from '@/app/components/how-to-start/specialization'

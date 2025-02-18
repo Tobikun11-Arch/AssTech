@@ -1,3 +1,4 @@
+"use client"
 import React, { useState } from 'react'
 import PythonJson from './python.json'
 import JSJson from './javascript.json'
