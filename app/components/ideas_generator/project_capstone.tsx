@@ -11,7 +11,7 @@ import Image from 'next/image'
 import domtoimage from "dom-to-image";
 import jsPDF from "jspdf";
 
-export default function project_capstone() {
+export default function ProjectCapstone() {
     const { setLevelType, level_type, industry, ideas, project_type, add_details, setAddDetails } = useGenerator()
     const [ parsedData, setParsedData ] = useState<{ idea_name: string; technologies: string[]; summary: string } | null>(null);
     const [ loading, setLoading ] = useState<boolean>(false)

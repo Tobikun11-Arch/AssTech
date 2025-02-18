@@ -6,7 +6,7 @@ interface levelProps {
     onclick: React.MouseEventHandler<HTMLHeadingElement> | undefined
 }
 
-export default function level({ label, onclick }: levelProps) {
+export default function Level({ label, onclick }: levelProps) {
     const { level_type } = useGenerator()
 
     return (

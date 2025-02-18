@@ -8,7 +8,7 @@ interface optionsTypes {
     options: optionsProps[]
 }
 
-export default function commitSelector({ options }: optionsTypes) {
+export default function CommitSelector({ options }: optionsTypes) {
     const [selected, setSelected] = useState(options[0])
     const { setTime } = useHowToStart()
 

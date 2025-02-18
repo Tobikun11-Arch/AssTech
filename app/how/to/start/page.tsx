@@ -97,7 +97,7 @@ export default function Page() {
     useEffect(() => {
         const rawData = parsedData?.message ?? ""; // Ensure rawData is a string
         if (rawData) {
-            let jsonString = rawData.replace(/```json|```/g, "").trim(); // Remove markdown code block
+            const jsonString = rawData.replace(/```json|```/g, "").trim(); // Remove markdown code block
     
             // Function to remove AI-generated comments
             const sanitizeJSON = (json: string): string => {

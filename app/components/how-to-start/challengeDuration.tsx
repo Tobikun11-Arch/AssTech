@@ -8,7 +8,7 @@ interface optionsTypes {
     options: optionsProps[]
 }
 
-export default function challengeSelector({ options }: optionsTypes) {
+export default function ChallengeSelector({ options }: optionsTypes) {
     const [selected, setSelected] = useState(options[0])
     const { setChallengeDays } = useHowToStart()
 
