@@ -7,6 +7,5 @@ export default async function Page() {
     })
     const data = await response.json()
 
-
     return <Home count={data.length}/>
 }
