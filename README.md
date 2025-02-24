@@ -1,9 +1,5 @@
-# 🚀 [AssTech – Tech Students with AI-Driven Learning]
+# 🚀AssTech – Tech Students with AI-Driven Learning
 > AssTech is a web platform designed to help students in tech-related courses by providing AI-powered tools for learning, project ideation, and hands-on coding practice. It offers:
-✅ Project & Capstone Idea Generator – Students can explore mini-project and capstone ideas based on their selected industry and project type (Web, Mobile, etc.).
-✅ Personalized Learning Plan – Users can create a structured learning roadmap based on their desired tech career (e.g., Game Development, AI, Full Stack) and set a challenge duration (30, 60, or 90 days).
-✅ Online Code Compiler & Guide – A built-in coding environment where students can write and test code. It also provides real-time explanations of programming languages, their use cases, and advantages.
-
 
 ## 🔗 Live Demo  
 https://asstech.vercel.app/
