@@ -138,9 +138,9 @@ export default function Page() {
                 </div>
                 <div className='mt-5 w-full h-full'>
                     <textarea name="" id="" className='w-full outline-none border p-2 h-72 resize-none bg-black text-white'
-                    value={code} onChange={(e)=> setCode(e.target.value)} placeholder='//Write code here...'></textarea>
+                    value={code} onChange={(e)=> setCode(e.target.value)} placeholder='//Write code here...' spellCheck={false}></textarea>
                     <div className='w-full p-2 border-2 mt-4 h-80 overflow-y-auto'>
-                        <pre>{output ? output : "Output"}</pre>
+                        <pre spellCheck={false}>{output ? output : "Output"}</pre>
                     </div>
                 </div>
             </div>  
